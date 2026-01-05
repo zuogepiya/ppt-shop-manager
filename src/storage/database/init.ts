@@ -1,4 +1,4 @@
-import { getDb } from "coze-coding-dev-sdk";
+import { getDb } from "./dbAdapter";
 import { sql } from "drizzle-orm";
 import {
   users,

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "coze-coding-dev-sdk";
+import { getDb } from "@/storage/database/dbAdapter";
 import { sql } from "drizzle-orm";
 
 export async function POST() {

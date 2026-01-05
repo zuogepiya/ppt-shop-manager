@@ -1,5 +1,5 @@
 import { eq, and, SQL, like, or } from "drizzle-orm";
-import { getDb } from "coze-coding-dev-sdk";
+import { getDb } from "./dbAdapter";
 import {
   users,
   insertUserSchema,

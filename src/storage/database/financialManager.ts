@@ -1,5 +1,5 @@
 import { eq, and, SQL, like, desc, sql } from "drizzle-orm";
-import { getDb } from "coze-coding-dev-sdk";
+import { getDb } from "./dbAdapter";
 import {
   financialRecords,
   insertFinancialRecordSchema,

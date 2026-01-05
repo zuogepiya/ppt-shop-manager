@@ -1,12 +1,13 @@
 {
-  "name": "projects",
-  "version": "0.1.0",
+  "name": "ppt-shop-manager",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 5000",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate || true"
   },
   "dependencies": {
     "next": "16.0.10",
