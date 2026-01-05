@@ -1,66 +1,119 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "扣子编程 - AI 开发伙伴",
-  description: "扣子编程，你的 AI 开发伙伴已就位",
+  title: "PPT制作店铺管理系统 - 登录",
+  description: "PPT制作店铺员工管理系统",
 };
 
-export default function Home() {
+export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white text-black transition-colors duration-300 dark:bg-black dark:text-white">
-      {/* 主容器 */}
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between px-16 py-32 sm:items-start">
-        {/* 头部：Logo 和 产品名称 */}
-        <div className="flex items-center gap-3">
-          {/* 注意：生产环境建议使用 next/image 并配置 remotePatterns */}
-          <img
-            className="dark:invert"
-            src="https://lf3-static.bytednsdoc.com/obj/eden-cn/hkpzboz/coze_logo.png"
-            alt="扣子编程 Logo"
-            width={40}
-            height={40}
-            style={{ width: "40px", height: "40px", objectFit: "contain" }}
-          />
-          <span className="text-xl font-bold tracking-tight text-black dark:text-zinc-50">
-            扣子编程
-          </span>
-        </div>
-
-        {/* 中间内容区：主标题和副标题 */}
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xl text-4xl font-semibold leading-tight tracking-tight text-black dark:text-zinc-50">
-            扣子编程，你的 AI 开发伙伴已就位
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+      <div className="w-full max-w-md">
+        {/* Logo 和标题 */}
+        <div className="mb-8 text-center">
+          <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 text-3xl">
+            📊
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            PPT制作店铺管理系统
           </h1>
-          <p className="max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            当前是空白入口文件，项目正在开发中，请稍候...
-            <br />
-            开发完成后界面将自动更新。如未自动更新成功，可以手动点击右上角刷新或重启按钮查看效果。
+          <p className="mt-2 text-sm text-gray-600">
+            员工管理 · 订单跟踪 · 财务统计
           </p>
         </div>
 
-        {/* 底部按钮区 */}
-        <div className="flex w-full flex-col gap-4 text-base font-medium sm:w-auto sm:flex-row">
-          {/* 按钮 1：前往首页 */}
-          <a
-            className="flex h-12 w-full min-w-[160px] items-center justify-center gap-2 rounded-full bg-black px-8 text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 md:w-auto"
-            href="https://code.coze.cn/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            前往首页
-          </a>
+        {/* 登录表单 */}
+        <div className="rounded-lg bg-white p-8 shadow-xl">
+          <form action="/api/auth/login" method="POST">
+            <div className="space-y-6">
+              <div>
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  用户名
+                </label>
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="请输入用户名"
+                />
+              </div>
 
-          {/* 按钮 2：查看文档 */}
-          <a
-            className="flex h-12 w-full min-w-[160px] items-center justify-center rounded-full border border-solid border-black/[.08] px-8 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-auto"
-            href="https://docs.coze.cn/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            查看文档
-          </a>
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  密码
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="请输入密码"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                登录
+              </button>
+            </div>
+          </form>
+
+          {/* 角色说明 */}
+          <div className="mt-8 rounded-md bg-gray-50 p-4">
+            <h3 className="mb-3 text-sm font-medium text-gray-700">
+              系统角色说明：
+            </h3>
+            <div className="space-y-2 text-xs text-gray-600">
+              <div className="flex items-start gap-2">
+                <span className="mt-0.5 inline-block h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                <div>
+                  <span className="font-medium">总台管理：</span>
+                  全面管理员工、财务、订单
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-0.5 inline-block h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                <div>
+                  <span className="font-medium">管理者：</span>
+                  审核订单、分配任务
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-0.5 inline-block h-1.5 w-1.5 rounded-full bg-orange-600"></span>
+                <div>
+                  <span className="font-medium">客服：</span>
+                  沟通客户、跟进订单
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="mt-0.5 inline-block h-1.5 w-1.5 rounded-full bg-purple-600"></span>
+                <div>
+                  <span className="font-medium">设计师：</span>
+                  制作PPT、更新进度
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
+
+        {/* 底部提示 */}
+        <p className="mt-6 text-center text-sm text-gray-600">
+          演示账号：admin/admin123 | manager/manager123 | cs/cs123 |
+          designer/designer123
+        </p>
+      </div>
     </div>
   );
 }
