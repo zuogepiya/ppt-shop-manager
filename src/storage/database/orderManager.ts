@@ -137,8 +137,8 @@ export class OrderManager {
 
   async deleteOrder(id: string): Promise<boolean> {
     const db = await getDb();
-    const result = await db.delete(orders).where(eq(orders.id, id));
-    return (result.rowCount ?? 0) > 0;
+    const result = await db.delete(orders).where(eq(orders.id, id)).returning();
+    return result.length > 0;
   }
 
   async getOrdersByStatus(status: string): Promise<Order[]> {

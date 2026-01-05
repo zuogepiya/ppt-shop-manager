@@ -75,8 +75,8 @@ export class CustomerManager {
 
   async deleteCustomer(id: string): Promise<boolean> {
     const db = await getDb();
-    const result = await db.delete(customers).where(eq(customers.id, id));
-    return (result.rowCount ?? 0) > 0;
+    const result = await db.delete(customers).where(eq(customers.id, id)).returning();
+    return result.length > 0;
   }
 
   async getCustomerOptions(): Promise<{ id: string; name: string }[]> {
