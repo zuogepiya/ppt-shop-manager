@@ -30,7 +30,7 @@ export class FinancialManager {
     filters?: Partial<
       Pick<
         FinancialRecord,
-        "id" | "orderId" | "employeeId" | "type" | "direction" | "status"
+        "id" | "orderId" | "employeeId" | "type" | "category" | "direction" | "status"
       >
     >;
     search?: string;
@@ -59,6 +59,9 @@ export class FinancialManager {
     }
     if (filters.type !== undefined && filters.type !== null) {
       conditions.push(eq(financialRecords.type, filters.type));
+    }
+    if (filters.category !== undefined && filters.category !== null) {
+      conditions.push(eq(financialRecords.category, filters.category));
     }
     if (filters.direction !== undefined && filters.direction !== null) {
       conditions.push(eq(financialRecords.direction, filters.direction));
@@ -119,6 +122,57 @@ export class FinancialManager {
       .delete(financialRecords)
       .where(eq(financialRecords.id, id));
     return (result.rowCount ?? 0) > 0;
+  }
+
+  async getFinancialStatistics(options: {
+    startDate?: Date;
+    endDate?: Date;
+    type?: string;
+  } = {}): Promise<{
+    totalIncome: number;
+    totalExpense: number;
+    profit: number;
+  }> {
+    const db = await getDb();
+    const { startDate, endDate, type } = options;
+
+    // 构建查询条件
+    const conditions: SQL[] = [];
+    if (startDate && endDate) {
+      conditions.push(
+        sql`${financialRecords.transactionDate} >= ${startDate} AND ${financialRecords.transactionDate} <= ${endDate}`
+      );
+    }
+    if (type) {
+      conditions.push(eq(financialRecords.type, type));
+    }
+
+    // 获取收入总额
+    const incomes = await db
+      .select({ amount: financialRecords.amount })
+      .from(financialRecords)
+      .where(and(eq(financialRecords.direction, "in"), ...conditions));
+
+    // 获取支出总额
+    const expenses = await db
+      .select({ amount: financialRecords.amount })
+      .from(financialRecords)
+      .where(and(eq(financialRecords.direction, "out"), ...conditions));
+
+    const totalIncome = incomes.reduce(
+      (sum, record) => sum + parseFloat(record.amount || "0"),
+      0
+    );
+    const totalExpense = expenses.reduce(
+      (sum, record) => sum + parseFloat(record.amount || "0"),
+      0
+    );
+
+    return {
+      totalIncome,
+      totalExpense,
+      profit: totalIncome - totalExpense,
+    };
   }
 
   async getFinancialSummary(options: {
