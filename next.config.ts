@@ -8,9 +8,6 @@ const nextConfig: NextConfig = {
     DATABASE_URL: process.env.DATABASE_URL,
   },
 
-  // 优化构建
-  swcMinify: true,
-
   // 图片优化
   images: {
     domains: [],
