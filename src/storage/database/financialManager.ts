@@ -145,24 +145,16 @@ export class FinancialManager {
     }
 
     // 获取收入总额
-    let incomeQuery = db
+    const incomes = await db
       .select({ amount: financialRecords.amount })
-      .from(financialRecords);
+      .from(financialRecords)
+      .where(and(eq(financialRecords.direction, "in"), ...conditions));
 
     // 获取支出总额
-    let expenseQuery = db
+    const expenses = await db
       .select({ amount: financialRecords.amount })
-      .from(financialRecords);
-
-    // 合并方向过滤条件
-    const incomeConditions = [eq(financialRecords.direction, "in"), ...conditions];
-    const expenseConditions = [eq(financialRecords.direction, "out"), ...conditions];
-
-    incomeQuery = incomeQuery.where(and(...incomeConditions));
-    expenseQuery = expenseQuery.where(and(...expenseConditions));
-
-    const incomes = await incomeQuery;
-    const expenses = await expenseQuery;
+      .from(financialRecords)
+      .where(and(eq(financialRecords.direction, "out"), ...conditions));
 
     const totalIncome = incomes.reduce(
       (sum, record) => sum + parseFloat(record.amount || "0"),

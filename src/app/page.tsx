@@ -1,12 +1,55 @@
-import { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "PPT制作店铺管理系统 - 登录",
-  description: "PPT制作店铺员工管理系统",
-};
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // 根据角色跳转到对应页面
+        const role = data.user.role;
+        if (role === "admin") {
+          router.push("/dashboard/admin");
+        } else if (role === "manager") {
+          router.push("/dashboard/manager");
+        } else if (role === "cs") {
+          router.push("/dashboard/cs");
+        } else if (role === "designer") {
+          router.push("/dashboard/designer");
+        } else {
+          router.push("/dashboard");
+        }
+      } else {
+        setError(data.error || "登录失败");
+      }
+    } catch (err) {
+      setError("网络错误，请稍后重试");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
       <div className="w-full max-w-md">
@@ -25,7 +68,13 @@ export default function LoginPage() {
 
         {/* 登录表单 */}
         <div className="rounded-lg bg-white p-8 shadow-xl">
-          <form action="/api/auth/login" method="POST">
+          {error && (
+            <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-800">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <div>
                 <label
@@ -63,9 +112,10 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                disabled={loading}
+                className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                登录
+                {loading ? "登录中..." : "登录"}
               </button>
             </div>
           </form>

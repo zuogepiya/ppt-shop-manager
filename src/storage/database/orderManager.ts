@@ -1,4 +1,4 @@
-import { eq, and, SQL, like, desc } from "drizzle-orm";
+import { eq, and, SQL, like, desc, asc } from "drizzle-orm";
 import { getDb } from "coze-coding-dev-sdk";
 import {
   orders,
@@ -64,21 +64,49 @@ export class OrderManager {
       conditions.push(like(orders.title, `%${search}%`));
     }
 
-    let query = db.select().from(orders);
-    if (conditions.length > 0) {
-      query = query.where(and(...conditions));
-    }
+    // 构建查询并应用所有条件
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-    // 排序
+    // 根据排序方式确定排序
+    let orderByClause;
     if (orderBy === "createdAt") {
-      query = query.orderBy(desc(orders.createdAt));
+      orderByClause = [desc(orders.createdAt)];
     } else if (orderBy === "deadline") {
-      query = query.orderBy(orders.deadline);
+      orderByClause = [asc(orders.deadline)];
     } else if (orderBy === "deliveryDate") {
-      query = query.orderBy(orders.deliveryDate);
+      orderByClause = [asc(orders.deliveryDate)];
     }
 
-    return query.limit(limit).offset(skip);
+    // 执行查询
+    if (whereClause && orderByClause) {
+      return await db
+        .select()
+        .from(orders)
+        .where(whereClause)
+        .orderBy(...orderByClause)
+        .limit(limit)
+        .offset(skip);
+    } else if (whereClause) {
+      return await db
+        .select()
+        .from(orders)
+        .where(whereClause)
+        .limit(limit)
+        .offset(skip);
+    } else if (orderByClause) {
+      return await db
+        .select()
+        .from(orders)
+        .orderBy(...orderByClause)
+        .limit(limit)
+        .offset(skip);
+    } else {
+      return await db
+        .select()
+        .from(orders)
+        .limit(limit)
+        .offset(skip);
+    }
   }
 
   async getOrderById(id: string): Promise<Order | null> {
