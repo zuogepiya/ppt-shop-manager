@@ -17,11 +17,8 @@ const nextConfig: NextConfig = {
   // 输出配置（用于静态导出，可选）
   // output: 'export',
 
-  // 实验性功能
-  experimental: {
-    // 启用服务器组件
-    serverComponentsExternalPackages: ['postgres'],
-  },
+  // 服务器外部包（Next.js 16 的正确配置）
+  serverExternalPackages: ['postgres'],
 };
 
 export default nextConfig;
