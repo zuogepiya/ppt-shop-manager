@@ -120,9 +120,8 @@ export class FinancialManager {
     const db = await getDb();
     const result = await db
       .delete(financialRecords)
-      .where(eq(financialRecords.id, id))
-      .returning();
-    return result.length > 0;
+      .where(eq(financialRecords.id, id));
+    return (result.rowCount ?? 0) > 0;
   }
 
   async getFinancialStatistics(options: {

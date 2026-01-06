@@ -87,8 +87,8 @@ export class UserManager {
 
   async deleteUser(id: string): Promise<boolean> {
     const db = await getDb();
-    const result = await db.delete(users).where(eq(users.id, id)).returning();
-    return result.length > 0;
+    const result = await db.delete(users).where(eq(users.id, id));
+    return (result.rowCount ?? 0) > 0;
   }
 
   async getUserOptions(): Promise<{ id: string; username: string }[]> {
