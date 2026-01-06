@@ -70,24 +70,9 @@ curl -X POST http://localhost:5000/api/test-data
 
 ## 🌐 公网部署
 
-### 🚀 新手？从这里开始！
-
-如果你是第一次部署，请按照以下指南操作：
-
-1. **[新手完全指南](./新手完全指南.md)** - 最详细的手把手教程，从零开始（推荐新手）
-2. **[快速部署指南](./快速部署指南.md)** - 5分钟快速部署（适合有一定基础）
-3. **[Vercel+Supabase部署准备完成](./Vercel+Supabase部署准备完成.md)** - 部署前检查和准备
-
-### 📚 完整部署文档
-
-- **[VERCEL_SUPABASE_部署指南.md](./VERCEL_SUPABASE_部署指南.md)** - Vercel + Supabase详细部署教程
-- **[部署检查清单.md](./部署检查清单.md)** - 逐步检查确保部署成功
-- **[常见问题解决方案.md](./常见问题解决方案.md)** - 排查和解决部署问题
-- **[快速参考.md](./快速参考.md)** - 部署关键步骤速查表
-
 ### 方案一：Vercel + Supabase（推荐）
 
-最简单、最快、免费的方式。详见：[VERCEL_SUPABASE_部署指南.md](VERCEL_SUPABASE_部署指南.md)
+最简单、最快、免费的方式。详见：[DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)
 
 ### 方案二：云服务器
 
