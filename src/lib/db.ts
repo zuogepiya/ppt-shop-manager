@@ -29,6 +29,3 @@ export const db = drizzle(client);
 export async function closeConnection() {
   await client.end();
 }
-
-// Vercel Edge Runtime 支持
-export const runtime = "edge";
